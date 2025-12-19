@@ -37,7 +37,7 @@ const Footer = () => {
         ) : (
             // For small screens
             <div className="footer-content items-center mx-auto text-center">
-                &copy; 2025 Naaptol.
+                &copy; 2025 SilkRoad.
             </div>
         )}
     </div>

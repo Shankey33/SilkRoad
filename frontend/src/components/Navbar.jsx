@@ -87,7 +87,7 @@ const Navbar = () => {
         // Navbar logic for big screens
         <div className="bg-green-700 p-4 text-white flex items-center shadow-md sticky top-0 z-10">
 
-        <Link to="/"><div className="title text-2xl font-bold tracking-wide mr-8">Naapptol</div></Link>
+        <Link to="/"><div className="title text-2xl font-bold tracking-wide mr-8">SilkRoad</div></Link>
 
         {/* Navigation Links */}
 
@@ -128,7 +128,7 @@ const Navbar = () => {
         // Small screens
         <>
         <div className="bg-green-700 p-4 text-white flex items-center justify-between shadow-md">
-            <Link to="/" ><div className="title text-4xl font-bold tracking-wide mr-8">Naapptol</div></Link>
+            <Link to="/" ><div className="title text-4xl font-bold tracking-wide mr-8">SilkRoad</div></Link>
 
             <div className="text-3xl">
                 <FontAwesomeIcon icon={faBars} style={{color: "#ffffff"}} onClick={handleHamburgerClick} />

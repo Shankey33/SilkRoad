@@ -20,12 +20,12 @@ const About = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-6">Our Journey</h2>
           
           <p className="text-gray-700 mb-6 leading-relaxed">
-            Launched in 2008, Naaptol has transcended its roots as a TV shopping channel to become a leading Multi-channel Retail & Discovery Platform. 
+            Launched in 2008, SilkRoad has transcended its roots as a TV shopping channel to become a leading Multi-channel Retail & Discovery Platform. 
             Its unique advantage lies in its ability to bridge the urban-rural divide, effectively reaching and influencing buying decisions across diverse demographics.
           </p>
           
           <p className="text-gray-700 mb-6 leading-relaxed">
-            Naaptol's strength lies in its multi-pronged approach. It seamlessly blends the reach of seven dedicated TV channels with an established presence on 
+            SilkRoad's strength lies in its multi-pronged approach. It seamlessly blends the reach of seven dedicated TV channels with an established presence on 
             third-party channels and DTH homepages. Its burgeoning digital footprint strategically complements this TV dominance across social media giants 
             like Facebook, Instagram, and Youtube. The company is actively scaling its Digital Business, recognizing the future of retail lies in the online space.
           </p>
@@ -35,13 +35,13 @@ const About = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-6">Our Approach</h2>
           
           <p className="text-gray-700 mb-6 leading-relaxed">
-            But Naaptol's success goes beyond mere presence. It's powered by a robust, in-house technology platform designed for performance marketing. 
+            But SilkRoad's success goes beyond mere presence. It's powered by a robust, in-house technology platform designed for performance marketing. 
             This bespoke system boasts built-in predictive analytics, which optimize business processes and seamlessly integrate operations, ensuring top-notch efficiency.
           </p>
           
           <p className="text-gray-700 mb-6 leading-relaxed">
-            Naaptol thrives on a marketplace model, leveraging its technological prowess, strong sourcing and delivery networks, and multi-lingual programming 
-            and digital marketing capabilities (spanning six languages!). This comprehensive approach sets Naaptol apart, solidifying its position as a pioneer in the Indian retail landscape.
+            SilkRoad thrives on a marketplace model, leveraging its technological prowess, strong sourcing and delivery networks, and multi-lingual programming 
+            and digital marketing capabilities (spanning six languages!). This comprehensive approach sets SilkRoad apart, solidifying its position as a pioneer in the Indian retail landscape.
           </p>
         </div>
 
@@ -49,7 +49,7 @@ const About = () => {
           <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-6">How Did We Do It?</h2>
           
           <p className="text-gray-700 mb-8 leading-relaxed">
-            Behind the scenes at Naaptol, a team of driven individuals (the Naaptolites!) is always working to unlock the full potential of every opportunity. 
+            Behind the scenes at SilkRoad, a team of driven individuals (the SilkRoadites!) is always working to unlock the full potential of every opportunity. 
             Whether it's closing a deal, streamlining operations, building cutting-edge tech, or creating captivating marketing campaigns, our combined expertise 
             is fueled by a deep well of research and insights. The result? A thriving environment where we deliver the best, every single day.
           </p>

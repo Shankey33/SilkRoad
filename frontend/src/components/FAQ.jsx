@@ -20,7 +20,7 @@ const FAQ = () => {
         <div className="container mx-auto px-4 md:px-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center text-green-700">Frequently Asked Questions</h1>
           <p className="text-lg md:text-xl max-w-3xl mx-auto text-center text-gray-700">
-            Find answers to common questions about Naapptol's products and services
+            Find answers to common questions about SilkRoad's products and services
           </p>
         </div>
       </div>
@@ -43,7 +43,7 @@ const FAQ = () => {
             
             {isOpen1 && (
               <div className="px-6 pb-4 text-gray-700 leading-relaxed">
-                <p> Yes, with Naapptol you can be rest assured with the products. We offer a 100% genuineess gurantee</p>
+                <p> Yes, with SilkRoad you can be rest assured with the products. We offer a 100% genuineess gurantee</p>
               </div>
             )}
           </div>
@@ -83,7 +83,7 @@ const FAQ = () => {
             
             {isOpen3 && (
               <div className="px-6 pb-4 text-gray-700 leading-relaxed">
-                <p> You can write to us on support@naapptol.in</p>
+                <p> You can write to us on support@SilkRoad.in</p>
               </div>
             )}
           </div>
@@ -136,7 +136,7 @@ const FAQ = () => {
             If you couldn't find the answer to your question, our support team is here to help.
           </p>
           <p className="text-gray-700">
-            Contact us via email at <a href="mailto:support@Naapptol.in" className="text-green-700 hover:text-green-800 font-medium">support@Naapptol.in</a>
+            Contact us via email at <a href="mailto:support@SilkRoad.in" className="text-green-700 hover:text-green-800 font-medium">support@SilkRoad.in</a>
           </p>
         </div>
       
