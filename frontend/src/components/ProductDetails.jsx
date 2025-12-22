@@ -87,7 +87,7 @@ const ProductDetails = () => {
   };
 
   if(!product || product.images === undefined){
-    return <div className="md:mb-100 md:ml-170 md:mt-50 mt-70 mb-100 ml-35"><img src={loading} alt="loading..." /></div>
+    return <div className="flex justify-center items-center min-h-[60vh]"><img src={loading} alt="loading..." className="w-32 h-32 md:w-48 md:h-48" /></div>
   }
 
   const handleAddToCart = async () => {
@@ -143,70 +143,92 @@ const ProductDetails = () => {
   }
 
     return (
-    <div className="bg-gray-100 py-8 pb-16">
+    <div className="bg-gray-100 py-4 md:py-8 pb-12 md:pb-16">
       <div className="container mx-auto px-4">
 
         {/* Breadcrumbs */}
-          <div className="text-sm text-gray-500 mb-6">
-            <a href="/" className="hover:text-green-700">Home</a> &gt; <a href={"/category/"+category} className="hover:text-green-700">{category}</a> &gt; <span className="text-gray-700">{product.name}</span>
-          </div>
+          <nav className="mb-4 md:mb-6" aria-label="Breadcrumb">
+            <ol className="flex items-center flex-wrap gap-0.5 md:gap-0.5 text-xs md:text-sm">
+              <li className="flex items-center">
+                <a href="/" className="text-gray-500 hover:text-green-700 transition-colors duration-200 font-medium">
+                  Home
+                </a>
+              </li>
+              <li className="flex items-center">
+                <span className="mx-1 md:mx-2 text-gray-400">/</span>
+              </li>
+              <li className="flex items-center">
+                <a href={"/category/"+category} className="text-gray-500 hover:text-green-700 transition-colors duration-200 font-medium capitalize">
+                  {category}
+                </a>
+              </li>
+              <li className="flex items-center">
+                <span className="mx-1 md:mx-2 text-gray-400">/</span>
+              </li>
+              <li className="flex items-center min-w-0">
+                <span className="text-gray-700 font-semibold truncate max-w-[150px] sm:max-w-xs md:max-w-none">
+                  {product.name}
+                </span>
+              </li>
+            </ol>
+          </nav>
         {/* Product details main section */}
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="md:flex">
             {/* Product Images */}
-            <div className="md:w-1/2 p-4">
-              <div className="mb-4">
+            <div className="md:w-1/2 p-3 md:p-4 lg:p-6">
+              <div className="mb-3 md:mb-4">
                 <img 
                   src={product.images[selectedImage]} 
                   alt={product.name} 
-                  className="w-full h-100 object-contain border rounded-lg"
+                  className="w-full h-64 sm:h-80 md:h-96 lg:h-[500px] object-contain border rounded-lg"
                 />
               </div>
-              <div className="flex gap-2 justify-center">
+              <div className="flex gap-2 justify-center overflow-x-auto pb-2">
                 {product.images.map((image, index) => (
                   <div 
                     key={index} 
-                    className={`border rounded-md p-1 cursor-pointer ${selectedImage === index ? 'border-green-700' : 'border-gray-300'}`}
+                    className={`border rounded-md p-1 cursor-pointer flex-shrink-0 ${selectedImage === index ? 'border-green-700 border-2' : 'border-gray-300'}`}
                     onClick={() => setSelectedImage(index)}
                   >
-                    <img src={image} alt={`${product.name}`} className="h-16 w-16 object-contain" />
+                    <img src={image} alt={`${product.name}`} className="h-12 w-12 sm:h-16 sm:w-16 object-contain" />
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="md:w-1/2 p-6 md:border-0 md:border-l-1 border-1 ">
-              <h1 className="text-2xl font-bold text-gray-800 mb-2">{product.name}</h1>
+            <div className="md:w-1/2 p-4 md:p-6 border-t md:border-t-0 md:border-l border-gray-200">
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-2">{product.name}</h1>
               
-              <div className="flex items-center mb-4">
-                <span className="text-gray-600">{product.reviewCount} reviews</span>
+              <div className="flex items-center mb-3 md:mb-4">
+                <span className="text-sm md:text-base text-gray-600">{product.reviewCount} reviews</span>
               </div>
 
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-green-700 mr-2">₹{itemPrice}</span>
-                <span className="text-lg text-gray-500 line-through">₹{itemOrignalPrice}</span>
-                <span className="ml-2 bg-red-100 text-red-700 px-2 py-1 rounded text-sm font-semibold">{product.discount}% Off</span>
+              <div className="mb-4 md:mb-6 flex flex-wrap items-center gap-2">
+                <span className="text-2xl md:text-3xl lg:text-4xl font-bold text-green-700">₹{itemPrice}</span>
+                <span className="text-base md:text-lg lg:text-xl text-gray-500 line-through">₹{itemOrignalPrice}</span>
+                <span className="bg-red-100 text-red-700 px-2 py-1 rounded text-xs md:text-sm font-semibold">{product.discount}% Off</span>
               </div>
 
               
-              <p className="text-gray-600 mb-6">{product.description}</p>
+              <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6">{product.description}</p>
 
 
-              <div className="mb-6">
-                <h3 className="font-semibold text-gray-700 mb-2">Quantity:</h3>
+              <div className="mb-4 md:mb-6">
+                <h3 className="font-semibold text-gray-700 mb-2 text-sm md:text-base">Quantity:</h3>
                 <div className="flex items-center">
                   <button 
                     onClick={decrementQuantity}
-                    className="px-3 py-1 border rounded-l-md bg-gray-100 hover:bg-gray-200"
+                    className="px-3 md:px-4 py-1 md:py-2 border rounded-l-md bg-gray-100 hover:bg-gray-200 text-lg md:text-xl"
                   >
                     -
                   </button>
-                  <div className="quantity-meter  border-gray-500 border-t-1 border-b-1 h-8 pt-0.5">
-                    <span className="w-16 text-center py-1 mr-3 ml-3 ">{quantity}</span>
+                  <div className="quantity-meter border-gray-500 border-t border-b h-8 md:h-10 flex items-center">
+                    <span className="w-12 md:w-16 text-center text-base md:text-lg">{quantity}</span>
                   </div>
                   <button 
                     onClick={incrementQuantity}
-                    className="px-3 py-1 border rounded-r-md bg-gray-100 hover:bg-gray-200"
+                    className="px-3 md:px-4 py-1 md:py-2 border rounded-r-md bg-gray-100 hover:bg-gray-200 text-lg md:text-xl"
                   >
                     +
                   </button>
@@ -214,26 +236,26 @@ const ProductDetails = () => {
               </div>
 
 
-              <div className="flex flex-col md:flex-row gap-3 mb-6">
-                <button className="flex-1 bg-white border-2 border-green-700 text-green-700 py-3 px-6 rounded-md font-semibold hover:bg-green-50 transition flex items-center justify-center" onClick={handleAddToCart}>
+              <div className="flex flex-col sm:flex-row gap-2 md:gap-3 mb-4 md:mb-6">
+                <button className="flex-1 bg-white border-2 border-green-700 text-green-700 py-2 md:py-3 px-4 md:px-6 rounded-md font-semibold hover:bg-green-50 transition flex items-center justify-center text-sm md:text-base" onClick={handleAddToCart}>
                   <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
                   Add to Cart
                 </button>
-                <button className="flex-1 bg-green-700 text-white py-3 px-6 rounded-md font-semibold hover:bg-green-800 transition flex items-center justify-center" onClick={handleBuyNow}>
+                <button className="flex-1 bg-green-700 text-white py-2 md:py-3 px-4 md:px-6 rounded-md font-semibold hover:bg-green-800 transition flex items-center justify-center text-sm md:text-base" onClick={handleBuyNow}>
                   Buy Now
                 </button>
               </div>
 
-              <div className="border-t pt-4">
-                <div className="flex items-center mb-2">
+              <div className="border-t pt-3 md:pt-4">
+                <div className="flex items-center mb-2 text-sm md:text-base">
                   <FontAwesomeIcon icon={faTruck} className="text-green-700 mr-2" />
                   <span>Free shipping for orders above ₹299</span>
                 </div>
-                <div className="flex items-center mb-2">
+                <div className="flex items-center mb-2 text-sm md:text-base">
                   <FontAwesomeIcon icon={faUndo} className="text-green-700 mr-2" />
                   <span>7-day easy returns</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center text-sm md:text-base">
                   <FontAwesomeIcon icon={faShieldAlt} className="text-green-700 mr-2" />
                   <span>Secure payment</span>
                 </div>
@@ -243,11 +265,11 @@ const ProductDetails = () => {
         </div>
 
         {/* Tabs for Specifications and Reviews */}
-        <div className="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="mt-6 md:mt-8 bg-white rounded-lg shadow-md overflow-hidden">
           <div className="border-b">
             <div className="flex flex-wrap">
               <button 
-                className={`py-4 px-6 font-semibold ${
+                className={`py-3 md:py-4 px-4 md:px-6 font-semibold text-sm md:text-base ${
                   activeTab === 'specifications' 
                     ? 'text-green-700 border-b-2 border-green-700' 
                     : 'text-gray-600 hover:text-green-700'
@@ -257,7 +279,7 @@ const ProductDetails = () => {
                 Specifications
               </button>
               <button 
-                className={`py-4 px-6 font-semibold ${
+                className={`py-3 md:py-4 px-4 md:px-6 font-semibold text-sm md:text-base ${
                   activeTab === 'reviews' 
                     ? 'text-green-700 border-b-2 border-green-700' 
                     : 'text-gray-600 hover:text-green-700'
@@ -269,24 +291,24 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             {activeTab === 'specifications' && (
               <div>
 
                 {/* Specifications tab here*/}
-                <h2 className="text-xl font-bold text-gray-800 mb-4">Product Specifications</h2>
+                <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-800 mb-3 md:mb-4">Product Specifications</h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
                   {product.specifications.map((spec, index) => (
-                    <div key={index} className="flex border-b pb-2">
-                      <span className="font-semibold text-gray-700 w-1/3">{spec.name}:</span>
-                      <span className="text-gray-600">{spec.value}</span>
+                    <div key={index} className="flex flex-col sm:flex-row border-b pb-2 gap-1 sm:gap-0">
+                      <span className="font-semibold text-gray-700 sm:w-1/3 text-sm md:text-base">{spec.name}:</span>
+                      <span className="text-gray-600 text-sm md:text-base">{spec.value}</span>
                     </div>
                   ))}
                 </div>
     
-                <h3 className="font-bold text-gray-800 mb-2">Key Features:</h3>
-                <ul className="list-disc pl-5 text-gray-600">
+                <h3 className="font-bold text-gray-800 mb-2 text-base md:text-lg">Key Features:</h3>
+                <ul className="list-disc pl-5 text-gray-600 text-sm md:text-base">
                   {product.features.map((feature, index) => (
                     <li key={index} className="mb-1">{feature}</li>
                   ))}
@@ -297,57 +319,57 @@ const ProductDetails = () => {
             {/* Reviews tab here */}
             {activeTab === 'reviews' && (
               <div className="flex flex-col md:flex-row">
-                <div className="md:w-1/3 mb-6 md:mb-0 md:pr-6 md:border-r md:pt-25">
-                  <h2 className="text-xl font-bold text-gray-800 mb-4">Customer Reviews</h2>
-                  <div className="mb-4">
+                <div className="md:w-1/3 mb-6 md:mb-0 md:pr-6 md:border-r md:pt-0">
+                  <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-3 md:mb-4">Customer Reviews</h2>
+                  <div className="mb-3 md:mb-4">
                     <div className="flex items-center mb-2">
-                      <span className="text-lg font-semibold"><FontAwesomeIcon icon={faStar} style={{color: "#FFD43B",}} /> 4.5 out of 5</span>
+                      <span className="text-base md:text-lg font-semibold"><FontAwesomeIcon icon={faStar} style={{color: "#FFD43B",}} /> 4.5 out of 5</span>
                     </div>
-                    <p className="text-gray-600">Based on {product.reviewCount} reviews</p>
+                    <p className="text-sm md:text-base text-gray-600">Based on {product.reviewCount} reviews</p>
                   </div>
   
                   <div className="space-y-2">
                     <div className="flex items-center">
-                      <span className="w-16 text-sm">5 stars</span>
+                      <span className="w-12 md:w-16 text-xs md:text-sm">5 stars</span>
                       <div className="flex-1 h-2 bg-gray-200 rounded mx-2">
                         <div className="h-full bg-green-500 rounded" style={{ width: '70%' }}></div>
                       </div>
-                      <span className="text-sm text-gray-600">70%</span>
+                      <span className="text-xs md:text-sm text-gray-600">70%</span>
                     </div>
                     <div className="flex items-center">
-                      <span className="w-16 text-sm">4 stars</span>
+                      <span className="w-12 md:w-16 text-xs md:text-sm">4 stars</span>
                       <div className="flex-1 h-2 bg-gray-200 rounded mx-2">
                         <div className="h-full bg-green-500 rounded" style={{ width: '20%' }}></div>
                       </div>
-                      <span className="text-sm text-gray-600">20%</span>
+                      <span className="text-xs md:text-sm text-gray-600">20%</span>
                     </div>
                     <div className="flex items-center">
-                      <span className="w-16 text-sm">3 stars</span>
+                      <span className="w-12 md:w-16 text-xs md:text-sm">3 stars</span>
                       <div className="flex-1 h-2 bg-gray-200 rounded mx-2">
                         <div className="h-full bg-green-500 rounded" style={{ width: '5%' }}></div>
                       </div>
-                      <span className="text-sm text-gray-600">5%</span>
+                      <span className="text-xs md:text-sm text-gray-600">5%</span>
                     </div>
                     <div className="flex items-center">
-                      <span className="w-16 text-sm">2 stars</span>
+                      <span className="w-12 md:w-16 text-xs md:text-sm">2 stars</span>
                       <div className="flex-1 h-2 bg-gray-200 rounded mx-2">
                         <div className="h-full bg-green-500 rounded" style={{ width: '3%' }}></div>
                       </div>
-                      <span className="text-sm text-gray-600">3%</span>
+                      <span className="text-xs md:text-sm text-gray-600">3%</span>
                     </div>
                     <div className="flex items-center">
-                      <span className="w-16 text-sm">1 star</span>
+                      <span className="w-12 md:w-16 text-xs md:text-sm">1 star</span>
                       <div className="flex-1 h-2 bg-gray-200 rounded mx-2">
                         <div className="h-full bg-green-500 rounded" style={{ width: '2%' }}></div>
                       </div>
-                      <span className="text-sm text-gray-600">2%</span>
+                      <span className="text-xs md:text-sm text-gray-600">2%</span>
                     </div>
                   </div>
                 </div>
   
               
                 <div className="md:w-2/3 md:pl-6">
-                <span ><FontAwesomeIcon icon={faClockRotateLeft} style={{color: "#000000",}} />Most Recent Reviews</span>
+                <span className="text-sm md:text-base font-semibold mb-3 md:mb-4 block"><FontAwesomeIcon icon={faClockRotateLeft} style={{color: "#000000",}} /> Most Recent Reviews</span>
 
                   <div className="border-b pb-4 mb-4">
                     <div className="flex justify-between items-center mb-2">
@@ -399,21 +421,21 @@ const ProductDetails = () => {
         </div>
 
         {/* Similar Products section */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Similar Products</h2>
+        <div className="mt-6 md:mt-8">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-3 md:mb-4">People also brought</h2>
           
           <Swiper
             modules={[Navigation]}
             navigation
-            spaceBetween={5}
-            slidesPerView={3}
+            spaceBetween={10}
+            slidesPerView={1}
             breakpoints={{
-              300: { slidesPerView: 1 },
-              400: { slidesPerView: 1 },
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 4 },
+              480: { slidesPerView: 2, spaceBetween: 10 },
+              640: { slidesPerView: 2, spaceBetween: 15 },
+              768: { slidesPerView: 3, spaceBetween: 15 },
+              1024: { slidesPerView: 4, spaceBetween: 20 },
             }}
-            className='pb-6 sd:'
+            className='pb-6'
             preventClicks={false}
             preventClicksPropagation={false}
           >

@@ -37,7 +37,7 @@ const Banner = () => {
                 
                 {images.map((image) => (
                     <SwiperSlide key={image._id}>                        
-                        <a href={image.link}><img src={image.image} alt="banner image" className='w-150 md:w-full md:h-auto h-80 md:object-cover object-fill cursor-pointer ' /></a>
+                        <a href={image.link}><img src={image.image} alt="banner image" className='w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover cursor-pointer' /></a>
                     </SwiperSlide>
                 ))}
             </Swiper> 

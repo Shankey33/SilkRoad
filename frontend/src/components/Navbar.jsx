@@ -40,19 +40,12 @@ const Navbar = () => {
 
     // Logic for small screen handling 
     const [isHamMenuOpen, setIsHamMenuOpen] = useState(false);
-    const [screenSize, setScreenSize] = useState(window.innerWidth);
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const [categories, setCategories] = useState([]);
 
     const handleHamburgerClick = () => {
         setIsHamMenuOpen(!isHamMenuOpen);
     }
-
-    useEffect(() => {
-        const handleResize = () => setScreenSize(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, [window.innerWidth]);
     
     const handleOpenCategory = () => {
         setIsCategoryOpen(!isCategoryOpen);
@@ -82,100 +75,119 @@ const Navbar = () => {
 
   return (
     <>
-    {screenSize >= 768 ? (
+        {/* Desktop Navbar - hidden on mobile */}
+        <div className="hidden md:flex bg-green-700 p-4 text-white items-center shadow-md sticky top-0 z-10">
+            <Link to="/"><div className="title text-xl md:text-2xl font-bold tracking-wide mr-4 md:mr-8">SilkRoad</div></Link>
 
-        // Navbar logic for big screens
-        <div className="bg-green-700 p-4 text-white flex items-center shadow-md sticky top-0 z-10">
-
-        <Link to="/"><div className="title text-2xl font-bold tracking-wide mr-8">SilkRoad</div></Link>
-
-        {/* Navigation Links */}
-
-            <div className="links flex gap-4 text-lg font-semibold mr-8 items-center">
+            {/* Navigation Links */}
+            <div className="links flex gap-2 md:gap-4 text-base md:text-lg font-semibold mr-4 md:mr-8 items-center">
                 <Link to="/" className="hover:text-green-300 transition"><span onClick={handleReload}>Home <FontAwesomeIcon icon={faHouse} style={{color: "#ffffff",}} /></span></Link>
                 <Link to="/about" className="hover:text-green-300 transition">About <FontAwesomeIcon icon={faBuilding} style={{color: "#ffffff",}} /></Link>
             </div>
 
-        {/* Search area and account buttons here */}
-
-            <div className="flex items-center ml-auto">
-                <p className={`font-semibold mr-5 flex flex-row items-center gap-1 cursor-pointer ${isCategoryOpen ? "text-green-300" : ''}`} onClick={handleOpenCategory}>Categories <FontAwesomeIcon className={`items-center mb-1.5`} icon={faSortDown} style={{color: "#ffffff"}} /></p>
+            {/* Search area and account buttons */}
+            <div className="flex items-center ml-auto relative">
+                <p className={`font-semibold mr-3 md:mr-5 flex flex-row items-center gap-1 cursor-pointer text-sm md:text-base ${isCategoryOpen ? "text-green-300" : ''}`} onClick={handleOpenCategory}>Categories <FontAwesomeIcon className="items-center mb-1.5" icon={faSortDown} style={{color: "#ffffff"}} /></p>
                 
-                {isCategoryOpen && <div className="category-elements grid grid-cols-2 font-small bg-white absolute text-black mt-90 rounded-md shadow-lg w-100 transition-all duration-300 p-4 z-20">
+                {isCategoryOpen && <div className="category-elements grid grid-cols-2 text-sm bg-white absolute text-black top-full mt-2 rounded-md shadow-lg w-64 md:w-80 transition-all duration-300 p-4 z-20">
                     {categories.map((category) => (
                         <a key={category._id} href={`/category/${category}`} className="block px-4 py-2 hover:bg-green-600 rounded-md">{category}</a>
                     ))}
                 </div>}
 
-                <form className="flex gap-2 max-w-md w-full" action={() => searchItem(searchQuery)}>                                                             
-                    <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search here..." className="px-2 py-1 rounded-md text-gray-900 focus:outline-none w-full" />                                                         
-                    <input type="submit" value="Search" className="bg-white text-green-700 px-3 py-1 rounded-md font-semibold hover:bg-green-100 cursor-pointer transition" />
+                <form className="flex gap-2 max-w-xs md:max-w-md w-full" action={() => searchItem(searchQuery)}>                                                             
+                    <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search here..." className="px-2 py-1 rounded-md text-gray-900 focus:outline-none w-full text-sm md:text-base" />                                                         
+                    <input type="submit" value="Search" className="bg-white text-green-700 px-2 md:px-3 py-1 rounded-md font-semibold hover:bg-green-100 cursor-pointer transition text-sm md:text-base whitespace-nowrap" />
                 </form>
 
-                {!isLoggedIn && <Link to="/user" className="hover:text-green-300 transition ml-8 text-2xl font-semibold mr-3"><FontAwesomeIcon icon={faUserPlus} style={{color: "#ffffff",}} /></Link>}
+                {!isLoggedIn && <Link to="/user" className="hover:text-green-300 transition ml-4 md:ml-8 text-xl md:text-2xl font-semibold mr-2 md:mr-3"><FontAwesomeIcon icon={faUserPlus} style={{color: "#ffffff",}} /></Link>}
                 {isLoggedIn && <>
-                    <Link to="/cart" className="hover:text-green-300 transition mr-5 ml-5 flex items-center gap-1 text-xl font-semibold"><FontAwesomeIcon icon={faShoppingCart} style={{color: "#ffffff",}} />Cart</Link>
-                    <Link to="/" className="hover:text-green-300 transition mr-5 ml-5 flex items-center gap-1 text-xl font-semibold"><FontAwesomeIcon icon={faUserMinus} style={{color: "#ffffff",}} onClick={handleLogOut}/></Link> 
+                    <Link to="/cart" className="hover:text-green-300 transition mr-3 md:mr-5 ml-3 md:ml-5 flex items-center gap-1 text-lg md:text-xl font-semibold"><FontAwesomeIcon icon={faShoppingCart} style={{color: "#ffffff",}} /><span className="hidden lg:inline">Cart</span></Link>
+                    <Link to="/" className="hover:text-green-300 transition mr-3 md:mr-5 ml-3 md:ml-5 flex items-center gap-1 text-lg md:text-xl font-semibold"><FontAwesomeIcon icon={faUserMinus} style={{color: "#ffffff",}} onClick={handleLogOut}/></Link> 
                     </>
                 }
-
             </div>
-
         </div>
-    ) 
-    :    
-    (   
-        // Small screens
-        <>
-        <div className="bg-green-700 p-4 text-white flex items-center justify-between shadow-md">
-            <Link to="/" ><div className="title text-4xl font-bold tracking-wide mr-8">SilkRoad</div></Link>
 
-            <div className="text-3xl">
+        {/* Mobile Navbar - visible on mobile */}
+        <>
+        <div className="md:hidden bg-green-700 p-3 md:p-4 text-white flex items-center justify-between shadow-md sticky top-0 z-10">
+            <Link to="/"><div className="px-2.5 py-2 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white text-2xl hover:bg-white/30 transition">SilkRoad</div></Link>
+            <div className="text-2xl md:text-3xl cursor-pointer">
                 <FontAwesomeIcon icon={faBars} style={{color: "#ffffff"}} onClick={handleHamburgerClick} />
             </div>
         </div>
 
         {/* Drawer menu from right */}
         <div
-            className={`fixed top-0 right-0 h-full w-64 bg-green-700 text-white shadow-lg z-50 transform transition-transform duration-300 ${
+            className={`fixed top-0 right-0 h-full w-72 md:w-80 bg-green-700 text-white shadow-lg z-50 transform transition-transform duration-300 ${
                 isHamMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
         >
-            <div className="flex flex-col p-6 space-y-4">
+            <div className="flex flex-col p-4 md:p-6 space-y-5 overflow-y-auto h-full">
+                {/* Close button */}
+                <div className="flex items-center justify-between mb-2">
+                    <div className="text-lg font-semibold">Menu</div>
+                    <button className="text-3xl md:text-4xl focus:outline-none hover:text-green-300" onClick={handleHamburgerClick}>×</button>
+                </div>
 
-                {/* manual cross sign, might replace it with an icon later*/}
-                <button className="self-end text-5xl mb-2 focus:outline-none" onClick={handleHamburgerClick}> &times;</button>
-
-                {/* Search form here */}
+                {/* Search form */}
                 <form action={() => {
                     searchItem(searchQuery)
                     navigate('/');
-                    }} className="flex gap-2 max-w-md w-full">                                                             
-                    <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search here..." className="px-2 py-1 rounded-md text-gray-900 focus:outline-none w-full" />                                                         
-                    <input type="submit" value="Search" className="bg-white text-green-700 px-3 py-1 rounded-md font-semibold hover:bg-green-100 cursor-pointer transition" onClick={handleHamburgerClick}/>
+                    }} className="flex flex-col gap-2 w-full">                                                             
+                    <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search here..." className="px-3 py-2 rounded-md text-gray-900 focus:outline-none w-full text-base" />                                                          
+                    <input type="submit" value="Search" className="bg-white text-green-700 px-3 py-2 rounded-md font-semibold hover:bg-green-100 cursor-pointer transition w-full" onClick={handleHamburgerClick}/>
                 </form>
                     
-                {!isLoggedIn && <Link to="/user" className="text-3xl hover:text-green-300 transition font-semibold mt-25 px-2"><span onClick={handleHamburgerClick}>User <FontAwesomeIcon icon={faUserPlus} style={{color: "#ffffff",}} /></span></Link>}
-                {isLoggedIn && 
-                    <span onClick={handleLogOut}><Link to="/" className="text-3xl hover:text-green-300 transition font-semibold mt-25 px-2">Log out  <FontAwesomeIcon icon={faUserMinus} style={{color: "#ffffff",}} /></Link></span>
-                }
-                <Link to="/about" className="hover:text-green-300 transition text-3xl font-semibold mt-6 px-2"><span onClick={handleHamburgerClick}>About <FontAwesomeIcon icon={faBuilding} style={{color: "#ffffff",}} /></span></Link>
-                {isLoggedIn && <Link to="/cart" className="hover:text-green-300 transition text-3xl font-semibold mt-6 px-2" onClick={handleHamburgerClick}>Cart <FontAwesomeIcon icon={faShoppingCart} style={{color: "#ffffff",}} /></Link>}
+                <nav className="flex flex-col gap-3 text-base md:text-lg font-semibold">
+                    {!isLoggedIn && (
+                        <Link to="/user" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition" onClick={handleHamburgerClick}>
+                            <span>User</span>
+                            <FontAwesomeIcon icon={faUserPlus} style={{color: "#ffffff"}} />
+                        </Link>
+                    )}
+                    {isLoggedIn && (
+                        <button onClick={handleLogOut} className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition text-left">
+                            <span>Log out</span>
+                            <FontAwesomeIcon icon={faUserMinus} style={{color: "#ffffff"}} />
+                        </button>
+                    )}
+                    <Link to="/about" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition" onClick={handleHamburgerClick}>
+                        <span>About</span>
+                        <FontAwesomeIcon icon={faBuilding} style={{color: "#ffffff"}} />
+                    </Link>
+                    {isLoggedIn && (
+                        <Link to="/cart" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition" onClick={handleHamburgerClick}>
+                            <span>Cart</span>
+                            <FontAwesomeIcon icon={faShoppingCart} style={{color: "#ffffff"}} />
+                        </Link>
+                    )}
+                </nav>
+
                 <div className="categories">
-                    <p className="font-semibold text-3xl px-2 mt-6 flex flex-row items-center gap-2" onClick={handleOpenCategory}>Categories <FontAwesomeIcon className="items-center mb-2" icon={faSortDown} style={{color: "#ffffff",}} /></p>
-                    {isCategoryOpen && <div className="category-elements grid grid-cols-1 font-medium bg-green-800 text-white mt-2 rounded-md shadow-lg w-full transition-all duration-300 p-2 overflow-y-auto max-h-80">
+                    <button className="w-full inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition font-semibold" onClick={handleOpenCategory}>
+                        <span>Categories</span>
+                        <FontAwesomeIcon className="items-center" icon={faSortDown} style={{color: "#ffffff"}} />
+                    </button>
+                    {isCategoryOpen && <div className="category-elements grid grid-cols-1 font-medium bg-green-800 text-white mt-2 rounded-md shadow-lg w-full transition-all duration-300 p-2 overflow-y-auto max-h-64">
                         {categories.map((category) => (
-                            <a key={category._id} href={`/category/${category}`} className="block px-4 py-2 hover:bg-green-600 rounded-md">{category}</a>
+                            <a key={category._id} href={`/category/${category}`} className="block px-4 py-2 hover:bg-green-600 rounded-md text-base" onClick={handleHamburgerClick}>{category}</a>
                         ))}
                     </div>}
                 </div>
-                <div className=" flex flex-col px-2 w-full text-3xl justify-end gap-6 mt-6">
-                    <Link to="/faq" className="font-semibold"><span onClick={handleHamburgerClick}>FAQ <FontAwesomeIcon icon={faComments} style={{color: "#ffffff",}} /></span></Link>
-                    <a href='https://www.youtube.com/naaptol' target='_blank'><FontAwesomeIcon icon={faYoutube} style={{color: "#ffffff",}}/></a>
-                    <a href="https://x.com/#!/shopatnaaptol" target='_blank'><FontAwesomeIcon icon={faXTwitter} style={{color: "#ffffff",}} /></a>
+
+                <div className="flex flex-col w-full text-base md:text-lg justify-end gap-3 md:gap-4 mt-auto">
+                    <Link to="/faq" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition font-semibold" onClick={handleHamburgerClick}>
+                        <span>FAQ</span>
+                        <FontAwesomeIcon icon={faComments} style={{color: "#ffffff"}} />
+                    </Link>
+                    <div className="flex justify-center gap-4 py-2">
+                        <a href='https://www.youtube.com/naaptol' target='_blank' rel="noreferrer" className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition"><FontAwesomeIcon icon={faYoutube} style={{color: "#ffffff"}}/></a>
+                        <a href="https://x.com/#!/shopatnaaptol" target='_blank' rel="noreferrer" className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition"><FontAwesomeIcon icon={faXTwitter} style={{color: "#ffffff"}} /></a>
+                    </div>
                 </div>
             </div>
-        
         </div>
 
         {/* Overlay to close menu when clicking outside */}
@@ -186,8 +198,6 @@ const Navbar = () => {
             />
         )}
         </>
-    )
-    }
     </>
   )
 }
