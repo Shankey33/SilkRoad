@@ -40,6 +40,7 @@ const Navbar = () => {
 
     // Logic for small screen handling 
     const [isHamMenuOpen, setIsHamMenuOpen] = useState(false);
+    const API_BASE = import.meta.env.VITE_API_URL;
     const [isCategoryOpen, setIsCategoryOpen] = useState(false);
     const [categories, setCategories] = useState([]);
 
@@ -57,18 +58,17 @@ const Navbar = () => {
 
     useEffect(() => {
         const categoriesFetch = async () => {
-            const response = await axios.get('http://localhost:3000/category/?type=all');
+            const response = await axios.get(`${API_BASE}/category/?type=all`);
             setCategories(response.data);
         }
         categoriesFetch();
-    }, []);
+    }, [API_BASE]);
 
     const handleReload = () => {
         setSearchQuery(""); 
         navigate('/');
         
     }
-
     const handleLogOut = () => {
         logout();
     }

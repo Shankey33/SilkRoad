@@ -9,11 +9,12 @@ import axios from 'axios';
 
                                                 
 const Banner = () => {
+    const API_BASE = import.meta.env.VITE_API_URL;
     const [images, setImages] = useState([]);
 
     useEffect(() => {
         const fetchBannerImages = async () => {
-            axios.get('http://localhost:3000/banner/all')
+            axios.get(`${API_BASE}/banner/all`)
                 .then(response => {
                     setImages(response.data);
                 }).catch(error => {
@@ -21,7 +22,7 @@ const Banner = () => {
                 })
         }
         fetchBannerImages();
-    }, []);
+    }, [API_BASE]);
 
 
     return (

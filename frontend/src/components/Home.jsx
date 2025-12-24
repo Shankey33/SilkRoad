@@ -18,25 +18,25 @@ import { SearchContext } from '../SearchContext.jsx'
 
 const Home = () => {
 
+    const API_BASE = import.meta.env.VITE_API_URL;
+
     const categoryName = useParams().categoryName;
 
     const {searchQuery, setSearchQuery} = useContext(SearchContext);
 
     const fetchProducts = async (searchQuery) => {
-
         if(categoryName){
-            const response = await axios.get(`http://localhost:3000/category/?type=${categoryName}`);            
+            const response = await axios.get(`${API_BASE}/category/?type=${categoryName}`);
             return response.data;
         }
 
         if(searchQuery && searchQuery.trim() !== ''){
-            const response = await axios.get(`http://localhost:3000/product/search/${searchQuery}`);            
+            const response = await axios.get(`${API_BASE}/product/search/${searchQuery}`);
             return response.data;
         }
-        else {
-            const response = await axios.get("http://localhost:3000/product/all");            
-            return response.data;
-        }
+
+        const response = await axios.get(`${API_BASE}/product/all`);
+        return response.data;
     }
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -46,7 +46,7 @@ const Home = () => {
         fetchProducts(searchQuery).then(data => setProducts(data)).catch(err => {
             console.error('Failed to fetch products', err);
         });
-    }, [searchQuery, categoryName]);
+    }, [API_BASE, searchQuery, categoryName]);
     
 
 

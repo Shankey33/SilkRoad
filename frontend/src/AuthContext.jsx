@@ -10,11 +10,13 @@ export const AuthProvider = ({children}) => {
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
 
+    const API_BASE = import.meta.env.VITE_API_URL;
+
 
     useEffect(() => {
         const token = localStorage.getItem('token');
         if(token) {
-            axios.get('http://localhost:3000/user/', {headers: {'x-auth-token': token}})
+            axios.get(`${API_BASE}/user/`, {headers: {'x-auth-token': token}})
             .then(response => {
                 setUser(response.data);
                 let userCart = response.data.cart || [];
@@ -22,7 +24,7 @@ export const AuthProvider = ({children}) => {
                 console.log("User cart product IDs: ", userCart);
                 if(userCart.length > 0) {
                     console.log("Fetching cart items for product IDs again: ", userCart);
-                    axios.get(`http://localhost:3000/product/cart/items?productId=${userCart.join(',')}`, {headers: {'x-auth-token': token}})
+                    axios.get(`${API_BASE}/product/cart/items?productId=${userCart.join(',')}`, {headers: {'x-auth-token': token}})
                     .then(res => {
                         setCart(res.data);
                     })
@@ -40,10 +42,10 @@ export const AuthProvider = ({children}) => {
         } else {
             setLoading(false);
         }
-    },[])
+    },[API_BASE])
 
     const login = async (email, password) => {
-        await axios.post('http://localhost:3000/user/login', {
+        await axios.post(`${API_BASE}/user/login`, {
             email: email,
             password: password
         })
@@ -58,7 +60,7 @@ export const AuthProvider = ({children}) => {
     };
 
     const register = async (name, email, password) => {
-        axios.post('http://localhost:3000/user/register', {
+        axios.post(`${API_BASE}/user/register`, {
             name: name,
             email: email,
             password: password,
@@ -74,7 +76,7 @@ export const AuthProvider = ({children}) => {
     const updateCart = (updatedCart) => {
         if(!Array.isArray(updatedCart) || updatedCart.length === 0){
             setCart([]);
-            axios.post('http://localhost:3000/user/updateCart', {cart: []
+            axios.post(`${API_BASE}/user/updateCart`, {cart: []
             }, {headers: { 'x-auth-token': localStorage.getItem('token') }});
             return;
         }
@@ -85,7 +87,7 @@ export const AuthProvider = ({children}) => {
         }));
 
         console.log("Updating cart with: ", backendCart);
-        axios.post('http://localhost:3000/user/updateCart', {cart: backendCart
+        axios.post(`${API_BASE}/user/updateCart`, {cart: backendCart
         }, {headers: { 'x-auth-token': localStorage.getItem('token') }}
         ).then(response => {
             console.log("Cart updated successfully");

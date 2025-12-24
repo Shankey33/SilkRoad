@@ -13,11 +13,13 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 
 //Internal imports
-import loading from '../assets/Loading.gif'
+import loading from '../assets/loading.gif'
 import ProductCard from './ProductCard';
 import { AuthContext } from '../AuthContext';
 
 const ProductDetails = () => {
+
+  const API_BASE = import.meta.env.VITE_API_URL;
 
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -30,47 +32,40 @@ const ProductDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-      
-      if(id){
-        //Main product api call
-        axios.get('http://localhost:3000/product/' + id)
-          .then(response => {
-              setProduct(response.data)
-              setCategory(response.data.category);
-              //Similar products api call
-              axios.get('http://localhost:3000/product/category/' + response.data.category)
-                .then(res => {
-                  setProducts(res.data)
-                })
-                .catch(err => {
-                  console.log('Error setting similar products', err);
-                }
-              );
-            })
-            .catch(err => {
-              console.log('Error fetching product details', err);
-              toast.error('Error fetching product details. Please try again later.');
-              redirect('/');
-            })
-        
-      } else {
-          toast.error('No product ID provided. Please select a product to view its details.');
-          redirect('/');
-        }
-  }, []);
+    if (!id) {
+      toast.error('No product ID provided. Please select a product to view its details.');
+      redirect('/');
+      return;
+    }
+
+    axios.get(`${API_BASE}/product/${id}`)
+      .then(response => {
+        setProduct(response.data);
+        setCategory(response.data.category);
+        return axios.get(`${API_BASE}/product/category/${response.data.category}`);
+      })
+      .then(res => {
+        if (res) setProducts(res.data);
+      })
+      .catch(err => {
+        console.log('Error fetching product details', err);
+        toast.error('Error fetching product details. Please try again later.');
+        redirect('/');
+      });
+  }, [API_BASE, id]);
 
     
   const changeProduct = (id) => {
-    axios.get('http://localhost:3000/product/' + id)
+    axios.get(`${API_BASE}/product/${id}`)
       .then(response => {
-          setProduct(response.data)
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        })
-        .catch(err => {
-          console.log('Error setting product details', err);
-          toast.error('Error fetching product details. Please try again later.');
-          redirect('/');
-        })
+        setProduct(response.data);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(err => {
+        console.log('Error setting product details', err);
+        toast.error('Error fetching product details. Please try again later.');
+        redirect('/');
+      });
   }
 
   const itemPrice = product.price;
