@@ -72,48 +72,88 @@ const Home = () => {
 
     
   return (
-    <>
+    <div className="min-h-screen bg-stone-100">
       <Banner />
-      <div className="products">
-        <div className="filter text-white bg-green-700 w-full p-2 md:p-3">
-            <div className='flex justify-end items-center relative'>
-                <div className='flex items-center text-lg md:text-xl lg:text-2xl gap-2 cursor-pointer' onClick={handleOpenFilter}>
-                    <FontAwesomeIcon icon={faFilter} style={{color: "#ffffff"}}/>
-                    <span className='mr-2 md:mr-4 lg:mr-8'>Filter</span>
-                </div>
-                { isFilterOpen &&
-                    <div className="filter-panel absolute top-full right-0 mt-2 text-base md:text-lg lg:text-xl bg-white text-black p-3 md:p-4 rounded-md shadow-lg w-56 md:w-64 z-20">
-                        <div className="flex flex-col space-y-3 md:space-y-4">
-                            <div className="sort-filter">
-                                <h3 className="font-semibold mb-2">Sort By</h3>
-                                <div className="space-y-2">
-                                    <div className="flex items-center">
-                                        <input type="radio" name="sort" id="price-asc" className="mr-2" onChange={sortAscending}/>
-                                        <label htmlFor="price-asc" className="flex items-center cursor-pointer">
-                                            Price <FontAwesomeIcon icon={faAngleUp} className="ml-1" style={{color: "#000000"}} />
-                                        </label>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <input type="radio" name="sort" id="price-desc" className="mr-2" onChange={sortDescending}/>
-                                        <label htmlFor="price-desc" className="flex items-center cursor-pointer">
-                                            Price <FontAwesomeIcon icon={faAngleDown} className="ml-1" style={{color: "#000000"}} />
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
+      
+      {/* Products Section */}
+      <div className="products py-8 md:py-12 px-4 md:px-8 lg:px-12">
+        {/* Section Header */}
+        <div className="max-w-7xl mx-auto mb-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <div>
+              {categoryName ? (
+                <>
+                  <p className="text-emerald-700 text-sm font-medium mb-1">Browse Collection</p>
+                  <h2 className="text-2xl md:text-3xl font-medium text-stone-800">
+                    <span className="font-semibold capitalize">{categoryName}</span> <span className="text-emerald-700">✦</span> <span className="text-stone-600">Products</span>
+                  </h2>
+                </>
+              ) : (
+                <>
+                  <p className="text-emerald-700 text-sm font-medium mb-1">Eco Essentials Planet-Friendly</p>
+                  <h2 className="text-2xl md:text-3xl font-medium text-stone-800">
+                    Bestselling <span className="text-emerald-700">✦</span> <span className="font-semibold">Products</span>
+                  </h2>
+                </>
+              )}
             </div>
+            
+            <div className="flex items-center gap-4">
+              {/* Filter Button */}
+              <div className="relative">
+                <button 
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 border ${
+                    isFilterOpen 
+                      ? 'bg-emerald-700 text-white border-emerald-700' 
+                      : 'bg-white text-stone-700 border-stone-300 hover:border-emerald-500 hover:text-emerald-700'
+                  }`}
+                  onClick={handleOpenFilter}
+                >
+                  <FontAwesomeIcon icon={faFilter} />
+                  <span>Filter</span>
+                </button>
+                
+                {/* Filter Dropdown */}
+                {isFilterOpen && (
+                  <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-xl w-56 z-20 overflow-hidden border border-stone-200 animate-fadeIn">
+                    <div className="bg-emerald-50 px-4 py-3 border-b border-stone-100">
+                      <h3 className="font-semibold text-emerald-800 text-sm">Sort By Price</h3>
+                    </div>
+                    <div className="p-3 space-y-1">
+                      <label className="flex items-center p-2.5 rounded-xl cursor-pointer hover:bg-emerald-50 transition-colors duration-200 group">
+                        <input type="radio" name="sort" className="w-4 h-4 accent-emerald-600" onChange={sortAscending}/>
+                        <span className="ml-3 text-sm font-medium text-stone-700 group-hover:text-emerald-700 flex items-center gap-2">
+                          Low to High <FontAwesomeIcon icon={faAngleUp} className="text-emerald-600" />
+                        </span>
+                      </label>
+                      <label className="flex items-center p-2.5 rounded-xl cursor-pointer hover:bg-emerald-50 transition-colors duration-200 group">
+                        <input type="radio" name="sort" className="w-4 h-4 accent-emerald-600" onChange={sortDescending}/>
+                        <span className="ml-3 text-sm font-medium text-stone-700 group-hover:text-emerald-700 flex items-center gap-2">
+                          High to Low <FontAwesomeIcon icon={faAngleDown} className="text-emerald-600" />
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* <a href="#" className="text-emerald-700 text-sm font-medium hover:text-emerald-800 transition-colors flex items-center gap-1">
+                More products <span className="text-lg">→</span>
+              </a> */}
+            </div>
+          </div>
         </div>
 
-        <div className="product-card grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mt-6 md:mt-8 lg:mt-10 mx-4 md:mx-6 lg:mx-10 mb-8 md:mb-10">
+        {/* Products Grid */}
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6">
             {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
+              <ProductCard key={product._id} product={product} />
             ))}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

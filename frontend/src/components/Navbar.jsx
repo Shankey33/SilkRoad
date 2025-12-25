@@ -10,16 +10,13 @@ import { AuthContext } from "../AuthContext.jsx";
 //External imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 import { faComments } from "@fortawesome/free-solid-svg-icons";
-import {faHouse} from "@fortawesome/free-solid-svg-icons";
 import {faSortDown} from "@fortawesome/free-solid-svg-icons";
 import {faShoppingCart} from "@fortawesome/free-solid-svg-icons";
 import {faUserMinus} from "@fortawesome/free-solid-svg-icons";
-
+import {faGithub} from "@fortawesome/free-brands-svg-icons";
 import axios from "axios";
 
 const Navbar = () => {
@@ -52,8 +49,11 @@ const Navbar = () => {
         setIsCategoryOpen(!isCategoryOpen);
     }
 
+    const [localSearch, setLocalSearch] = useState('');
+
     const searchItem = (query) => {
         setSearchQuery(query);
+        setLocalSearch(''); // Clear input after search
     }
 
     useEffect(() => {
@@ -76,34 +76,40 @@ const Navbar = () => {
   return (
     <>
         {/* Desktop Navbar - hidden on mobile */}
-        <div className="hidden md:flex bg-green-700 p-4 text-white items-center shadow-md sticky top-0 z-10">
-            <Link to="/"><div className="title text-xl md:text-2xl font-bold tracking-wide mr-4 md:mr-8">SilkRoad</div></Link>
+        <div className="navbar-desktop hidden md:flex bg-stone-100 p-4 text-stone-800 items-center shadow-sm sticky top-0 z-10 border-b border-stone-200">
+            <Link to="/"><div className="title text-2xl md:text-3xl font-serif italic tracking-wide mr-6 md:mr-10 text-emerald-800 hover:text-emerald-700 transition-all duration-300">SilkRoad</div></Link>
 
             {/* Navigation Links */}
-            <div className="links flex gap-2 md:gap-4 text-base md:text-lg font-semibold mr-4 md:mr-8 items-center">
-                <Link to="/" className="hover:text-green-300 transition"><span onClick={handleReload}>Home <FontAwesomeIcon icon={faHouse} style={{color: "#ffffff",}} /></span></Link>
-                <Link to="/about" className="hover:text-green-300 transition">About <FontAwesomeIcon icon={faBuilding} style={{color: "#ffffff",}} /></Link>
+            <div className="links flex gap-1 md:gap-2 text-sm md:text-base font-medium mr-4 md:mr-8 items-center">
+                {/* <Link to="/" className="nav-link group relative px-4 py-2 rounded-full hover:bg-stone-200 transition-all duration-300"><span onClick={handleReload} className="flex items-center gap-2 text-stone-700 group-hover:text-emerald-700">Shop</span></Link> */}
+                <Link to="/about" className="nav-link group relative px-4 py-2 rounded-full hover:bg-stone-200 transition-all duration-300"><span className="flex items-center gap-2 text-stone-700 group-hover:text-emerald-700">About</span></Link>
+                <div className="relative">
+                    <button className={`nav-link group relative px-4 py-2 rounded-full hover:bg-stone-200 transition-all duration-300 ${isCategoryOpen ? "bg-stone-200" : ''}`} onClick={handleOpenCategory}>
+                        <span className="flex items-center gap-1 text-stone-700 group-hover:text-emerald-700">Categories <FontAwesomeIcon className="text-xs" icon={faSortDown} /></span>
+                    </button>
+                    {/* Categories Dropdown */}
+                    {isCategoryOpen && <div className="category-elements grid grid-cols-2 text-sm bg-white absolute text-stone-700 top-full left-0 mt-2 rounded-2xl shadow-xl w-72 md:w-80 transition-all duration-300 p-4 z-20 border border-stone-200 animate-fadeIn">
+                        {categories.map((category) => (
+                            <Link key={category._id} to={`/category/${category}`} onClick={() => setIsCategoryOpen(false)} className="block px-4 py-2.5 hover:bg-emerald-50 hover:text-emerald-700 rounded-xl transition-all duration-300 font-medium">{category}</Link>
+                        ))}
+                    </div>}
+                </div>
             </div>
 
             {/* Search area and account buttons */}
-            <div className="flex items-center ml-auto relative">
-                <p className={`font-semibold mr-3 md:mr-5 flex flex-row items-center gap-1 cursor-pointer text-sm md:text-base ${isCategoryOpen ? "text-green-300" : ''}`} onClick={handleOpenCategory}>Categories <FontAwesomeIcon className="items-center mb-1.5" icon={faSortDown} style={{color: "#ffffff"}} /></p>
-                
-                {isCategoryOpen && <div className="category-elements grid grid-cols-2 text-sm bg-white absolute text-black top-full mt-2 rounded-md shadow-lg w-64 md:w-80 transition-all duration-300 p-4 z-20">
-                    {categories.map((category) => (
-                        <a key={category._id} href={`/category/${category}`} className="block px-4 py-2 hover:bg-green-600 rounded-md">{category}</a>
-                    ))}
-                </div>}
+            <div className="flex items-center ml-auto relative gap-4">
 
-                <form className="flex gap-2 max-w-xs md:max-w-md w-full" action={() => searchItem(searchQuery)}>                                                             
-                    <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search here..." className="px-2 py-1 rounded-md text-gray-900 focus:outline-none w-full text-sm md:text-base" />                                                         
-                    <input type="submit" value="Search" className="bg-white text-green-700 px-2 md:px-3 py-1 rounded-md font-semibold hover:bg-green-100 cursor-pointer transition text-sm md:text-base whitespace-nowrap" />
+                <form className="flex gap-0 max-w-xs md:max-w-sm w-full" action={() => searchItem(localSearch)}>                                                             
+                    <div className="relative flex-1">
+                        <input type="text" value={localSearch} onChange={(e) => setLocalSearch(e.target.value)} placeholder="Search Product..." className="pl-10 pr-4 py-2.5 rounded-full bg-white border border-stone-300 text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 w-full text-sm transition-all duration-300" />
+                        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
                 </form>
 
-                {!isLoggedIn && <Link to="/user" className="hover:text-green-300 transition ml-4 md:ml-8 text-xl md:text-2xl font-semibold mr-2 md:mr-3"><FontAwesomeIcon icon={faUserPlus} style={{color: "#ffffff",}} /></Link>}
+                {!isLoggedIn && <Link to="/user" className="p-2.5 rounded-full bg-white border border-stone-300 hover:border-emerald-500 hover:bg-emerald-50 transition-all duration-300"><FontAwesomeIcon icon={faUserPlus} className="text-stone-600 hover:text-emerald-700" /></Link>}
                 {isLoggedIn && <>
-                    <Link to="/cart" className="hover:text-green-300 transition mr-3 md:mr-5 ml-3 md:ml-5 flex items-center gap-1 text-lg md:text-xl font-semibold"><FontAwesomeIcon icon={faShoppingCart} style={{color: "#ffffff",}} /><span className="hidden lg:inline">Cart</span></Link>
-                    <Link to="/" className="hover:text-green-300 transition mr-3 md:mr-5 ml-3 md:ml-5 flex items-center gap-1 text-lg md:text-xl font-semibold"><FontAwesomeIcon icon={faUserMinus} style={{color: "#ffffff",}} onClick={handleLogOut}/></Link> 
+                    <Link to="/cart" className="p-2.5 rounded-full bg-white border border-stone-300 hover:border-emerald-500 hover:bg-emerald-50 transition-all duration-300"><FontAwesomeIcon icon={faShoppingCart} className="text-stone-600" /></Link>
+                    <button onClick={handleLogOut} className="p-2.5 rounded-full bg-white border border-stone-300 hover:border-red-400 hover:bg-red-50 transition-all duration-300"><FontAwesomeIcon icon={faUserMinus} className="text-stone-600 hover:text-red-500" /></button>
                     </>
                 }
             </div>
@@ -111,80 +117,79 @@ const Navbar = () => {
 
         {/* Mobile Navbar - visible on mobile */}
         <>
-        <div className="md:hidden bg-green-700 p-3 md:p-4 text-white flex items-center justify-between shadow-md sticky top-0 z-10">
-            <Link to="/"><div className="px-2.5 py-2 rounded-lg bg-white/20 backdrop-blur-md border border-white/30 text-white text-2xl hover:bg-white/30 transition">SilkRoad</div></Link>
-            <div className="text-2xl md:text-3xl cursor-pointer">
-                <FontAwesomeIcon icon={faBars} style={{color: "#ffffff"}} onClick={handleHamburgerClick} />
+        <div className="md:hidden bg-stone-100 p-3 md:p-4 text-stone-800 flex items-center justify-between shadow-sm sticky top-0 z-10 border-b border-stone-200">
+            <Link to="/"><div className="text-3xl font-serif italic text-emerald-800 font-semibold">SilkRoad</div></Link>
+            <div className="text-2xl md:text-3xl cursor-pointer text-emerald-800 hover:text-emerald-600 transition-all duration-300">
+                <FontAwesomeIcon icon={faBars} onClick={handleHamburgerClick} />
             </div>
         </div>
 
         {/* Drawer menu from right */}
         <div
-            className={`fixed top-0 right-0 h-full w-72 md:w-80 bg-green-700 text-white shadow-lg z-50 transform transition-transform duration-300 ${
+            className={`fixed top-0 right-0 h-full w-72 md:w-80 bg-stone-50 text-stone-800 shadow-2xl z-50 transform transition-transform duration-300 ${
                 isHamMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
         >
             <div className="flex flex-col p-4 md:p-6 space-y-5 overflow-y-auto h-full">
                 {/* Close button */}
-                <div className="flex items-center justify-between mb-2">
-                    <div className="text-lg font-semibold">Menu</div>
-                    <button className="text-3xl md:text-4xl focus:outline-none hover:text-green-300" onClick={handleHamburgerClick}>×</button>
+                <div className="flex items-center justify-between mb-2 pb-3 border-b border-stone-200">
+                    <div className="text-xl font-serif italic text-emerald-800">Menu</div>
+                    <button className="text-3xl md:text-4xl focus:outline-none text-stone-400 hover:text-emerald-700 transition-all duration-300" onClick={handleHamburgerClick}>×</button>
                 </div>
 
                 {/* Search form */}
                 <form action={() => {
-                    searchItem(searchQuery)
+                    searchItem(localSearch)
                     navigate('/');
-                    }} className="flex flex-col gap-2 w-full">                                                             
-                    <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search here..." className="px-3 py-2 rounded-md text-gray-900 focus:outline-none w-full text-base" />                                                          
-                    <input type="submit" value="Search" className="bg-white text-green-700 px-3 py-2 rounded-md font-semibold hover:bg-green-100 cursor-pointer transition w-full" onClick={handleHamburgerClick}/>
+                    }} className="flex flex-col gap-3 w-full">                                                             
+                    <input type="text" value={localSearch} onChange={(e) => setLocalSearch(e.target.value)} placeholder="Search products..." className="px-4 py-2.5 rounded-full bg-white border border-stone-300 text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 w-full text-base transition-all duration-300" />                                                          
+                    <input type="submit" value="Search" className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2.5 rounded-full font-medium cursor-pointer transition-all duration-300 w-full" onClick={handleHamburgerClick}/>
                 </form>
                     
-                <nav className="flex flex-col gap-3 text-base md:text-lg font-semibold">
+                <nav className="flex flex-col gap-2 text-base md:text-lg font-medium">
                     {!isLoggedIn && (
-                        <Link to="/user" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition" onClick={handleHamburgerClick}>
-                            <span>User</span>
-                            <FontAwesomeIcon icon={faUserPlus} style={{color: "#ffffff"}} />
+                        <Link to="/user" className="mobile-nav-link inline-flex items-center justify-between px-4 py-3 rounded-xl bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-all duration-300 group" onClick={handleHamburgerClick}>
+                            <span className="group-hover:text-emerald-700 transition-colors duration-300">Sign In</span>
+                            <FontAwesomeIcon icon={faUserPlus} className="text-stone-400 group-hover:text-emerald-600 transition-colors duration-300" />
                         </Link>
                     )}
                     {isLoggedIn && (
-                        <button onClick={handleLogOut} className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition text-left">
-                            <span>Log out</span>
-                            <FontAwesomeIcon icon={faUserMinus} style={{color: "#ffffff"}} />
+                        <button onClick={handleLogOut} className="mobile-nav-link inline-flex items-center justify-between px-4 py-3 rounded-xl bg-white hover:bg-red-50 border border-stone-200 hover:border-red-200 transition-all duration-300 text-left group">
+                            <span className="group-hover:text-red-600 transition-colors duration-300">Log out</span>
+                            <FontAwesomeIcon icon={faUserMinus} className="text-stone-400 group-hover:text-red-500 transition-colors duration-300" />
                         </button>
                     )}
-                    <Link to="/about" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition" onClick={handleHamburgerClick}>
-                        <span>About</span>
-                        <FontAwesomeIcon icon={faBuilding} style={{color: "#ffffff"}} />
+                    <Link to="/about" className="mobile-nav-link inline-flex items-center justify-between px-4 py-3 rounded-xl bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-all duration-300 group" onClick={handleHamburgerClick}>
+                        <span className="group-hover:text-emerald-700 transition-colors duration-300">About</span>
+                        <FontAwesomeIcon icon={faBuilding} className="text-stone-400 group-hover:text-emerald-600 transition-colors duration-300" />
                     </Link>
                     {isLoggedIn && (
-                        <Link to="/cart" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition" onClick={handleHamburgerClick}>
-                            <span>Cart</span>
-                            <FontAwesomeIcon icon={faShoppingCart} style={{color: "#ffffff"}} />
+                        <Link to="/cart" className="mobile-nav-link inline-flex items-center justify-between px-4 py-3 rounded-xl bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-all duration-300 group" onClick={handleHamburgerClick}>
+                            <span className="group-hover:text-emerald-700 transition-colors duration-300">Cart</span>
+                            <FontAwesomeIcon icon={faShoppingCart} className="text-stone-400 group-hover:text-emerald-600 transition-colors duration-300" />
                         </Link>
                     )}
                 </nav>
 
                 <div className="categories">
-                    <button className="w-full inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition font-semibold" onClick={handleOpenCategory}>
-                        <span>Categories</span>
-                        <FontAwesomeIcon className="items-center" icon={faSortDown} style={{color: "#ffffff"}} />
+                    <button className="w-full inline-flex items-center justify-between px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition-all duration-300 font-medium group" onClick={handleOpenCategory}>
+                        <span className="text-emerald-800">Categories</span>
+                        <FontAwesomeIcon className="items-center text-emerald-600" icon={faSortDown} />
                     </button>
-                    {isCategoryOpen && <div className="category-elements grid grid-cols-1 font-medium bg-green-800 text-white mt-2 rounded-md shadow-lg w-full transition-all duration-300 p-2 overflow-y-auto max-h-64">
+                    {isCategoryOpen && <div className="category-elements grid grid-cols-1 font-medium bg-white text-stone-700 mt-2 rounded-xl w-full transition-all duration-300 p-2 overflow-y-auto max-h-64 border border-stone-200">
                         {categories.map((category) => (
-                            <a key={category._id} href={`/category/${category}`} className="block px-4 py-2 hover:bg-green-600 rounded-md text-base" onClick={handleHamburgerClick}>{category}</a>
+                            <Link key={category._id} to={`/category/${category}`} className="block px-4 py-2.5 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-base transition-all duration-300" onClick={handleHamburgerClick}>{category}</Link>
                         ))}
                     </div>}
                 </div>
 
-                <div className="flex flex-col w-full text-base md:text-lg justify-end gap-3 md:gap-4 mt-auto">
-                    <Link to="/faq" className="inline-flex items-center justify-between px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition font-semibold" onClick={handleHamburgerClick}>
-                        <span>FAQ</span>
-                        <FontAwesomeIcon icon={faComments} style={{color: "#ffffff"}} />
+                <div className="flex flex-col w-full text-base md:text-lg justify-end gap-3 md:gap-4 mt-auto pt-4 border-t border-stone-200">
+                    <Link to="/faq" className="mobile-nav-link inline-flex items-center justify-between px-4 py-3 rounded-xl bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-all duration-300 font-medium group" onClick={handleHamburgerClick}>
+                        <span className="group-hover:text-emerald-700 transition-colors duration-300">FAQ</span>
+                        <FontAwesomeIcon icon={faComments} className="text-stone-400 group-hover:text-emerald-600 transition-colors duration-300" />
                     </Link>
-                    <div className="flex justify-center gap-4 py-2">
-                        <a href='https://www.youtube.com/naaptol' target='_blank' rel="noreferrer" className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition"><FontAwesomeIcon icon={faYoutube} style={{color: "#ffffff"}}/></a>
-                        <a href="https://x.com/#!/shopatnaaptol" target='_blank' rel="noreferrer" className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition"><FontAwesomeIcon icon={faXTwitter} style={{color: "#ffffff"}} /></a>
+                    <div className="flex justify-center gap-4 py-3">
+                        <a href="https://github.com/Shankey33" target='_blank' rel="noreferrer" className="p-3 rounded-full bg-white border border-stone-200 hover:bg-stone-100 hover:border-stone-400 transition-all duration-300 group"><FontAwesomeIcon icon={faGithub} className="text-stone-600 group-hover:text-stone-800" /></a>
                     </div>
                 </div>
             </div>
@@ -193,7 +198,7 @@ const Navbar = () => {
         {/* Overlay to close menu when clicking outside */}
         {isHamMenuOpen && (
             <div
-                className="fixed inset-0 bg-black bg-opacity-40 z-40"
+                className="fixed inset-0 bg-black/40 z-40"
                 onClick={handleHamburgerClick}
             />
         )}

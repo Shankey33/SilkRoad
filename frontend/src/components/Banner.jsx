@@ -28,17 +28,28 @@ const Banner = () => {
     return (
 
         // Image Slider with Swiper npm package
-        <div className='w-full'>
+        <div className='w-full banner-container'>
             <Swiper
                 loop={images.length > 1}
-                autoplay={{delay: 3000}}
+                autoplay={{delay: 4000, disableOnInteraction: false}}
                 modules={[Autoplay]}
+                className="rounded-none md:rounded-none"
             >
                 {/* To do -> Add click to open functionality */}
                 
                 {images.map((image) => (
-                    <SwiperSlide key={image._id}>                        
-                        <a href={image.link}><img src={image.image} alt="banner image" className='w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover cursor-pointer' /></a>
+                    <SwiperSlide key={image._id}>
+                        <div className="relative">
+                            <a href={image.link}>
+                                <img 
+                                    src={image.image} 
+                                    alt="banner image" 
+                                    className='w-full h-56 sm:h-72 md:h-96 lg:h-[480px] object-cover cursor-pointer' 
+                                />
+                            </a>
+                            {/* Optional: Text overlay like in the reference */}
+                            <div className="banner-overlay"></div>
+                        </div>
                     </SwiperSlide>
                 ))}
             </Swiper> 

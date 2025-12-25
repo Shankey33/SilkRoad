@@ -3,30 +3,48 @@ import { Link } from 'react-router-dom'
 
 // External Imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
+import {faGithub } from "@fortawesome/free-brands-svg-icons";
 
 
 const Footer = () => {
   return (
-    <div className='bg-green-700 text-white p-4 md:p-6 shadow-inner bottom-0 left-0 w-full footer'>
-        {/* Desktop Footer - visible on md and above */}
-        <div className="footer-content hidden md:flex justify-between items-center">
-            <div className="text-sm md:text-base">&copy; 2025 SilkRoad.</div>
+    <footer className='bg-stone-800 text-stone-300 bottom-0 left-0 w-full'>
+        <div className="max-w-7xl mx-auto px-6 py-6">
+            {/* Desktop Footer */}
+            <div className="hidden md:flex justify-between items-center">
+                {/* Brand */}
+                <Link to="/" className="flex items-center gap-2">
+                    <span className="text-xl font-serif italic text-white">SilkRoad</span>
+                </Link>
 
-            {/* Social media and FAQ links */}
-            <div className="footer-links flex gap-6 md:gap-8 lg:gap-10 text-lg md:text-xl">
-                <Link to="/faq" className="hover:text-green-300 transition">FAQ</Link>
-                <a href='https://www.youtube.com/naaptol' target='_blank' rel="noreferrer" className="hover:text-green-300 transition"><FontAwesomeIcon icon={faYoutube} style={{color: "#ffffff",}}/></a>
-                <a href="https://x.com/#!/shopatnaaptol" target='_blank' rel="noreferrer" className="hover:text-green-300 transition"><FontAwesomeIcon icon={faXTwitter} style={{color: "#ffffff",}} /></a>
+                {/* Links */}
+                <div className="flex items-center gap-6 text-sm">
+                    <Link to="/" className="hover:text-emerald-400 transition-colors">Home</Link>
+                    <Link to="/about" className="hover:text-emerald-400 transition-colors">About</Link>
+                    <Link to="/faq" className="hover:text-emerald-400 transition-colors">FAQ</Link>
+                </div>
+
+                {/* Social & Copyright */}
+                <div className="flex items-center gap-4">
+                    <div className="flex gap-2">
+                        <a href="https://github.com/Shankey33" target='_blank' className="w-8 h-8 rounded-full bg-stone-700 flex items-center justify-center hover:bg-emerald-600 transition-all duration-300">
+                            <FontAwesomeIcon icon={faGithub} className="text-white text-sm" />
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        {/* Mobile Footer - visible on small screens */}
-        <div className="footer-content md:hidden mx-auto text-center">
-            <div className="text-sm">&copy; 2025 SilkRoad.</div>
+            {/* Mobile Footer */}
+            {/* <div className="md:hidden text-center space-y-3 flex flex-row justify-between items-center">
+                <div className="flex justify-center gap-3">
+                    <a href="https://github.com/Shankey33" target='_blank' className="w-8 h-8 rounded-full bg-stone-700 flex items-center justify-center">
+                        <FontAwesomeIcon icon={faGithub} className="text-white text-sm" />
+                    </a>
+                </div>
+                <div className="text-stone-500 text-xs">&copy; 2025 SilkRoad</div>
+            </div> */}
         </div>
-    </div>
+    </footer>
   )
 }
 
