@@ -1,6 +1,6 @@
 import {useState, createContext, useEffect} from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
@@ -12,6 +12,8 @@ export const AuthProvider = ({children}) => {
 
     const API_BASE = import.meta.env.VITE_API_URL;
 
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -36,7 +38,7 @@ export const AuthProvider = ({children}) => {
             .catch((error) => {
                 console.log('Error while fetching the user, sign in again', error.message);
                 localStorage.removeItem('token')
-                Navigate('/login');
+                navigate('/login');
             })
             .finally(() => setLoading(false));
         } else {
@@ -108,8 +110,22 @@ export const AuthProvider = ({children}) => {
         setUser(null);
         localStorage.removeItem('token');
     };
+
+    const forgotPassword = async (email) => {
+        try {
+            const response = await axios.post(`${API_BASE}/user/forgot-password`, { email });
+            console.log(response.data.message);
+            return response.data;
+        } catch (error) {
+            console.error("Error resetting password: ", error?.response?.data?.message || error.message);
+            throw error.response?.data?.message || error.message;
+        }
+    }
+
+
+
     return (
-        <AuthContext.Provider value={{ user, error, setError, login, register, logout, updateCart, removeItem,  cart, loading }}>
+        <AuthContext.Provider value={{ user, error, setError, login, register, logout, updateCart, removeItem, cart, loading, forgotPassword }}>
             {children}
         </AuthContext.Provider>
     );

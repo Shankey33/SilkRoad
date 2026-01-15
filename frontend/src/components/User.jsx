@@ -11,7 +11,7 @@ const User = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { login, register, error, setError } = useContext(AuthContext);
+  const { login, register, error, setError, forgotPassword } = useContext(AuthContext);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -33,6 +33,34 @@ const User = () => {
     };
   }
   
+  // Forgot password UI state & handlers
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotMessage, setForgotMessage] = useState(null);
+
+  const openForgotModal = () => {
+    setForgotEmail(email || '');
+    setForgotMessage(null);
+    setShowForgot(true);
+  };
+
+  const submitForgotPassword = async (e) => {
+    e.preventDefault();
+    setForgotLoading(true);
+    setForgotMessage(null);
+    try {
+      const res = await forgotPassword(forgotEmail);
+      setForgotMessage({ type: 'success', text: res?.message || 'Reset link sent. Check your email.' });
+    } catch (err) {
+      const message = typeof err === 'string' ? err : (err?.response?.data?.message || err?.message || 'Error sending reset link.');
+      setForgotMessage({ type: 'error', text: message });
+    } finally {
+      setForgotLoading(false);
+    }
+  }
+
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 pb-20">
@@ -131,7 +159,9 @@ const User = () => {
               </div>
             </div>
           )}
-
+          <div>
+            <button type="button" onClick={openForgotModal} className="text-green-700 hover:underline">Forgot password</button>
+          </div>
           <button
             type="submit"
             className="w-full bg-green-700 text-white py-2 px-4 rounded-md hover:bg-green-800 transition font-semibold"
@@ -139,6 +169,35 @@ const User = () => {
             {isLogin ? 'Login' : 'Register'}
           </button>
         </form>
+
+        {showForgot && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 px-4">
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+              <h3 className="text-xl font-semibold mb-4">Reset Password</h3>
+              {forgotMessage && (
+                <div className={`mb-4 p-3 rounded ${forgotMessage.type === 'error' ? 'bg-red-100 text-red-700 border border-red-400' : 'bg-green-100 text-green-700 border border-green-400'}`}>
+                  {forgotMessage.text}
+                </div>
+              )}
+              <form onSubmit={submitForgotPassword} className="space-y-4">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  required
+                />
+                <div className="flex justify-end gap-2">
+                  <button type="button" onClick={() => setShowForgot(false)} className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100">Cancel</button>
+                  <button type="submit" disabled={forgotLoading} className="px-4 py-2 rounded-md bg-green-700 text-white hover:bg-green-800">
+                    {forgotLoading ? 'Sending...' : 'Send Reset Link'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
@@ -155,6 +214,6 @@ const User = () => {
       </div>
     </div>
   )
-}
+};
 
-export default User
+export default User;  

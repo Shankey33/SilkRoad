@@ -4,6 +4,7 @@ import User from "../Models/User.js";
 
 //External imports
 import jwt from 'jsonwebtoken';
+import { ENV } from '../lib/env.js';
 
 
 export const getAllProducts = async (req, res) => {
@@ -98,7 +99,7 @@ export const auth = (req, res, next) => {
     if(!token){
         return res.status(401).json({ message: "No authentication token, authorization denied" });
     }
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    const verified = jwt.verify(token, ENV.JWT_SECRET);
     if(!verified){
         return res.status(401).json({ message: "Token verification failed, authorization denied" });
     }
