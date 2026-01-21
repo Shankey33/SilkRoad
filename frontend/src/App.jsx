@@ -9,6 +9,8 @@ import FAQ from './components/FAQ'
 import ProductDetails from './components/ProductDetails'
 import Cart from './components/Cart'
 import ResetPassword from './components/ResetPassword'
+import Admin from './components/Admin'
+import AdminRoute from './components/AdminRoute' 
 import { SearchProvider } from './SearchContext'
 import { AuthProvider } from './AuthContext'
 import PrivateRoute from './components/PrivateRoute';
@@ -31,6 +33,11 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/admin" element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          } />
           <Route path="/cart" element={
             <PrivateRoute>
               <Cart />

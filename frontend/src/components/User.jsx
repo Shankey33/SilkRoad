@@ -10,6 +10,7 @@ const User = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [role, setRole] = useState('customer');
   const [confirmPassword, setConfirmPassword] = useState('');
   const { login, register, error, setError, forgotPassword } = useContext(AuthContext);
 
@@ -22,17 +23,17 @@ const User = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleUserAuth = async(e) => {
+  const handleUserAuth = async (e) => {
 
     e.preventDefault();
-    if(isLogin) {
+    if (isLogin) {
       login(email, password);
     }
-    else{
-      register(name, email, password);
+    else {
+      register(name, email, password, role);
     };
   }
-  
+
   // Forgot password UI state & handlers
   const [showForgot, setShowForgot] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
@@ -65,7 +66,7 @@ const User = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4 pb-20">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-8">
- 
+
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-green-700">{isLogin ? 'Login' : 'Register'}</h2>
           <p className="text-gray-600 mt-2">
@@ -75,7 +76,7 @@ const User = () => {
 
         <form className="space-y-6" onSubmit={handleUserAuth}>
           <div className="relative">
-            {error && 
+            {error &&
               <div className="mb-4 p-3 text-red-700 bg-red-100 border border-red-400 rounded">
                 {error}
               </div>
@@ -95,7 +96,7 @@ const User = () => {
               />
             </div>
           </div>
-          
+
 
           {!isLogin && (
             <div className="relative">
@@ -131,8 +132,8 @@ const User = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <div 
-                className="absolute right-3 text-gray-500 cursor-pointer" 
+              <div
+                className="absolute right-3 text-gray-500 cursor-pointer"
                 onClick={togglePasswordVisibility}
               >
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
@@ -142,7 +143,7 @@ const User = () => {
 
 
           {!isLogin && (
-            <div className="relative">
+            <><div className="relative">
               <label htmlFor="confirmPassword" className="block text-gray-700 mb-2 font-semibold">Confirm Password</label>
               <div className="flex items-center">
                 <div className="absolute left-3 text-gray-500">
@@ -154,13 +155,26 @@ const User = () => {
                   className="w-full py-2 px-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="********"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                  onChange={(e) => setConfirmPassword(e.target.value)} />
               </div>
             </div>
+            <div className="relative">
+              <label htmlFor="role" className="block text-gray-700 mb-2 font-semibold">Role</label>
+              <select
+                id="role"
+                className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}>
+                <option value="customer">Customer</option>
+                <option value="seller">Seller</option>
+              </select>
+            </div>
+            </>
+
           )}
+
           <div>
-            <button type="button" onClick={openForgotModal} className="text-green-700 hover:underline">Forgot password</button>
+            {isLogin && <button type="button" onClick={openForgotModal} className="text-green-700 hover:underline">Forgot password</button>}
           </div>
           <button
             type="submit"

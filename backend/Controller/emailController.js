@@ -8,7 +8,7 @@ if (!ENV.SENDGRID_API_KEY) {
   sgMail.setApiKey(ENV.SENDGRID_API_KEY);
 }
 
-const sendMail = async ({ to, subject, text, html}) => {
+const sendMail = async ({ to, subject, text, html }) => {
   const msg = {
     to,
     from: ENV.SMTP_USER,

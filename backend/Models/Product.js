@@ -18,6 +18,7 @@ const productSchema = new mongoose.Schema({
     features: { type: [String], default: [] },
     inStock: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
 const Product = mongoose.model('Product', productSchema);
