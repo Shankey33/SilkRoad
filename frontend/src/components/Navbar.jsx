@@ -1,6 +1,6 @@
 //React imports
 import { useEffect, useState, useContext } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 //Local Imports
@@ -9,20 +9,14 @@ import { AuthContext } from "../AuthContext.jsx";
 
 //External imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
-import { faBuilding } from "@fortawesome/free-solid-svg-icons";
-import { faComments } from "@fortawesome/free-solid-svg-icons";
-import {faSortDown} from "@fortawesome/free-solid-svg-icons";
-import {faShoppingCart} from "@fortawesome/free-solid-svg-icons";
-import {faUserMinus} from "@fortawesome/free-solid-svg-icons";
-import {faGithub} from "@fortawesome/free-brands-svg-icons";
+import { faBuilding, faComments, faSortDown, faShoppingCart, faUserMinus, faBars, faUserPlus, faBox } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import axios from "axios";
 
 const Navbar = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const {searchQuery, setSearchQuery} = useContext(SearchContext);
+    const {setSearchQuery} = useContext(SearchContext);
     const navigate = useNavigate();
     const {user, logout} = useContext(AuthContext);
 
@@ -64,11 +58,6 @@ const Navbar = () => {
         categoriesFetch();
     }, [API_BASE]);
 
-    const handleReload = () => {
-        setSearchQuery(""); 
-        navigate('/');
-        
-    }
     const handleLogOut = () => {
         logout();
     }
@@ -83,6 +72,7 @@ const Navbar = () => {
             <div className="links flex gap-1 md:gap-2 text-sm md:text-base font-medium mr-4 md:mr-8 items-center">
                 {/* <Link to="/" className="nav-link group relative px-4 py-2 rounded-full hover:bg-stone-200 transition-all duration-300"><span onClick={handleReload} className="flex items-center gap-2 text-stone-700 group-hover:text-emerald-700">Shop</span></Link> */}
                 <Link to="/about" className="nav-link group relative px-4 py-2 rounded-full hover:bg-stone-200 transition-all duration-300"><span className="flex items-center gap-2 text-stone-700 group-hover:text-emerald-700">About</span></Link>
+                {user?.role === 'seller' && <Link to="/admin" className="nav-link group relative px-4 py-2 rounded-full hover:bg-stone-200 transition-all duration-300"><span className="flex items-center gap-2 text-stone-700 group-hover:text-emerald-700">Dashboard</span></Link>}
                 <div className="relative">
                     <button className={`nav-link group relative px-4 py-2 rounded-full hover:bg-stone-200 transition-all duration-300 ${isCategoryOpen ? "bg-stone-200" : ''}`} onClick={handleOpenCategory}>
                         <span className="flex items-center gap-1 text-stone-700 group-hover:text-emerald-700">Categories <FontAwesomeIcon className="text-xs" icon={faSortDown} /></span>
@@ -163,6 +153,12 @@ const Navbar = () => {
                         <span className="group-hover:text-emerald-700 transition-colors duration-300">About</span>
                         <FontAwesomeIcon icon={faBuilding} className="text-stone-400 group-hover:text-emerald-600 transition-colors duration-300" />
                     </Link>
+                    {user?.role === 'seller' && (
+                        <Link to="/admin" className="mobile-nav-link inline-flex items-center justify-between px-4 py-3 rounded-xl bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-all duration-300 group" onClick={handleHamburgerClick}>
+                            <span className="group-hover:text-emerald-700 transition-colors duration-300">Dashboard</span>
+                            <FontAwesomeIcon icon={faBox} className="text-stone-400 group-hover:text-emerald-600 transition-colors duration-300" />
+                        </Link>
+                    )}
                     {isLoggedIn && (
                         <Link to="/cart" className="mobile-nav-link inline-flex items-center justify-between px-4 py-3 rounded-xl bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-300 transition-all duration-300 group" onClick={handleHamburgerClick}>
                             <span className="group-hover:text-emerald-700 transition-colors duration-300">Cart</span>
