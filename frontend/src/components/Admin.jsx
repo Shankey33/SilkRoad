@@ -4,9 +4,6 @@ import { AuthContext } from '../AuthContext'
 
 const Admin = () => {
     const {user, adminProducts} = useContext(AuthContext)
-    if (!user || (user.role !== 'admin' && user.role !== 'seller')) {
-        return <div>Access Denied. You do not have permission to view this page.</div>
-    }
     const [products, setProducts] = useState(null)
 
     const fetchAdminProducts = async () => {

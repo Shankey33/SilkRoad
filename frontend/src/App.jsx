@@ -10,10 +10,10 @@ import ProductDetails from './components/ProductDetails'
 import Cart from './components/Cart'
 import ResetPassword from './components/ResetPassword'
 import Admin from './components/Admin'
-import AdminRoute from './components/AdminRoute' 
 import { SearchProvider } from './SearchContext'
 import { AuthProvider } from './AuthContext'
 import PrivateRoute from './components/PrivateRoute';
+import PrivateRouteAdmin from './components/PrivateRouteAdmin';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,10 +34,10 @@ const App = () => {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/admin" element={
-            <AdminRoute>
+            <PrivateRouteAdmin>
               <Admin />
-            </AdminRoute>
-          } />
+            </PrivateRouteAdmin>
+          }/>
           <Route path="/cart" element={
             <PrivateRoute>
               <Cart />

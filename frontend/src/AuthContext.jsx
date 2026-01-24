@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
             .then(response => {
                 setUser(response.data);
                 localStorage.setItem('token', response.data.token);
-                if(response.data.role === 'admin' || response.data.role === 'seller') {
+                if(response.data.user.role === 'seller') {
                     navigate('/admin');
                 } else {
                     navigate('/');
@@ -130,7 +130,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     const adminProducts = async () => {
-        if(!['admin', 'seller'].includes(user?.role)) {
+        console.log("Fetching admin products for user: ", user);
+        if(!['seller'].includes(user?.role)) {
             throw new Error("Access denied. Admins/Sellers only.");
         }
         try {

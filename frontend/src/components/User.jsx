@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faLock, faUser, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios'
 import { AuthContext } from '../AuthContext'
 
 const User = () => {
