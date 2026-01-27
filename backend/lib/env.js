@@ -6,14 +6,15 @@ const getMongoDbUrl = () => {
     return process.env.MONGO_DB_URL 
         || process.env.MONGODB_URI 
         || process.env.DATABASE_URL 
-        || process.env.MONGO_URI;
+        || process.env.MONGO_URI
+        || process.env.mongoDbURI; // Found in DigitalOcean logs
 };
 
 
 const mongoDbUrl = getMongoDbUrl();
 
 export const ENV = {
-    PORT: process.env.PORT,
+    PORT: process.env.PORT || 8080,
     MONGO_DB_URL: mongoDbUrl,
     NODE_ENV: process.env.NODE_ENV,
     JWT_SECRET: process.env.JWT_SECRET,
@@ -26,31 +27,9 @@ export const ENV = {
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
 };
 
-// ----------------------------------------------------------------------------
-// DEBUGGING BLOCK - Remove after fixing deployment
-// ----------------------------------------------------------------------------
-console.log('--- STARTUP ENVIRONMENT DEBUG ---');
-console.log('Node Version:', process.version);
-console.log('Platform:', process.platform);
-
-// 1. Log all keys (NO VALUES) to see what is actually available
-const envKeys = Object.keys(process.env).sort();
-console.log(`Available Env Keys (${envKeys.length}):`);
-envKeys.forEach(k => console.log(` - ${k}`));
-
-// 2. Check for "mongo" or "db" related keys specifically
-const potentialDbKeys = envKeys.filter(k => 
-    k.toLowerCase().includes('mongo') || 
-    k.toLowerCase().includes('db') || 
-    k.toLowerCase().includes('url')
-);
-console.log('Potential DB Connection Keys found:', potentialDbKeys);
-
-// 3. Status Check
 if (!ENV.MONGO_DB_URL) {
     console.error('❌ CRITICAL: MongoDB URL is MISSING in ENV object.');
+    console.error('Checked: MONGO_DB_URL, MONGODB_URI, DATABASE_URL, MONGO_URI, mongoDbURI');
 } else {
-    console.log('✅ MongoDB URL found in ENV object.');
+    console.log('✅ MongoDB URL found.');
 }
-console.log('--- END ENVIRONMENT DEBUG ---');
-// ----------------------------------------------------------------------------
